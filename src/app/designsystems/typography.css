@@ -1,0 +1,41 @@
+:root {
+  /* Font Families */
+  --font-family-primary: var(--font-lexend), sans-serif;
+  --font-family-heading: var(--font-poppins), sans-serif;
+
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Font Sizes */
+  --text-header-1: 80px;
+  --text-header-2: 60px;
+  --text-header-3: 40px;
+  --text-header-4: 30px;
+  --text-header-5: 24px;
+  --text-header-6: 20px;
+  --text-header-7: 18px;
+  --text-body-1: 16px;
+  --text-body-2: 14px;
+  --text-caption: 12px;
+  --text-label: 11px;
+
+  /* Line Heights */
+  --line-height-header-1: normal;
+  --line-height-header-2: normal;
+  --line-height-header-3: normal;
+  --line-height-header-4: 40px;
+  --line-height-header-5: 36px;
+  --line-height-header-6: 30px;
+  --line-height-header-7: 26px;
+  --line-height-body-1: 24px;
+  --line-height-body-2: 22px;
+  --line-height-caption: 18px;
+  --line-height-label: 16px;
+
+  /* Theme bindings */
+  --font-sans: var(--font-family-primary);
+  --font-mono: var(--font-geist-mono, monospace);
+}

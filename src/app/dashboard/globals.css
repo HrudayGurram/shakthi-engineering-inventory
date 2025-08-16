@@ -12,3 +12,7 @@
   --text-body-1: 16px;
   --line-height-body-1: 24px;
 }
+
+body {
+  @apply bg-background text-foreground font-sans;
+}
