@@ -31,7 +31,7 @@ const menuItems: MenuItem[] = [
     { name: 'Items', href: '/dashboard/items', icon: Package },
     { name: 'Tools', href: '/dashboard/tools', icon: Wrench },
     { name: 'Assets', href: '/dashboard/assets', icon: Sprout },
-    { name: 'Project', href: '/dashboard/project', icon: Briefcase },
+    { name: 'Projects', href: '/dashboard/projects', icon: Briefcase },
     { name: 'Request', href: '/dashboard/request', icon: PlusSquare },
     { name: 'On hand', href: '/dashboard/on-hand', icon: Home },
     { name: 'GRN Report', href: '/dashboard/grn-report', icon: FileText },

@@ -1,7 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Input } from './input';
-import { Textarea } from './textarea';
-import { cn } from './utils';
 
 interface FloatingLabelInputProps {
     label: string;
@@ -11,9 +8,35 @@ interface FloatingLabelInputProps {
     isTextarea?: boolean;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    id: string;
 }
+const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+    ({ className, type, ...props }, ref) => {
+        return (
+            <input
+                type={type}
+                className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+                ref={ref}
+                {...props}
+            />
+        )
+    }
+)
+
+const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
+    ({ className, ...props }, ref) => {
+        return (
+            <textarea
+                className={`flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+                ref={ref}
+                {...props}
+            />
+        )
+    }
+)
 
 export function FloatingLabelInput({
+    id,
     label,
     type = "text",
     className,
@@ -56,7 +79,7 @@ export function FloatingLabelInput({
     const InputComponent = isTextarea ? Textarea : Input;
 
     return (
-        <div className="relative">
+        <div id={id} className="relative">
             {icon && (
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10">
                     {icon}
@@ -70,29 +93,16 @@ export function FloatingLabelInput({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                className={cn(
-                    "bg-input-background border-border rounded-lg transition-all duration-200 pt-6 pb-2",
-                    icon ? "pl-10" : "pl-3",
-                    isTextarea ? "min-h-[80px] pt-6" : "",
-                    className
-                )}
+                className={`bg-input-background border-border rounded-lg transition-all duration-200 px-3 py-2 ${isFloated ? "pt-6" : ""} ${icon ? "pl-10" : "pl-3"} ${isTextarea ? "min-h-[80px]" : ""} ${className}`}
                 {...props}
             />
 
             <label
                 onClick={handleLabelClick}
-                className={cn(
-                    "absolute left-3 text-muted-foreground transition-all duration-200 cursor-text select-none",
-                    icon ? "left-10" : "left-3",
-                    isFloated
-                        ? "top-2 text-xs transform-none"
-                        : isTextarea
-                            ? "top-4 text-base"
-                            : "top-1/2 -translate-y-1/2 text-base"
-                )}
+                className={`absolute text-muted-foreground transition-all duration-200 cursor-text select-none ${icon ? "left-10" : "left-3"} ${isFloated ? "top-2 text-xs" : "top-1/2 -translate-y-1/2"}`}
             >
                 {label}
             </label>
         </div>
     );
-}
+};

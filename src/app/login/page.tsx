@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
 import Text from "@/app/components/subcomponents/Text";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,45 +11,58 @@ import { useRouter } from 'next/navigation'
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
-  // 🚀 OPTIMIZATION: Prefetch the dashboard route as soon as the modal is set to open.
+
+  // Prefetch dashboard route for faster navigation
   useEffect(() => {
     if (message) {
       router.prefetch('/dashboard');
     }
   }, [message, router]);
 
-  // This function will handle the actual navigation.
   const handleCloseAndNavigate = () => {
     router.push('/dashboard');
   };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ employee_id: employeeId, password }),
+      });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage("Login successful!");
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Handle API errors (e.g., 401, 400, 500)
+        setError(data.message || "An unexpected error occurred.");
+      } else {
+        // Handle successful login
+        // You might want to save the user data or a token in local storage here
+        // For this example, we just show a success message
+        setMessage(data.message);
+      }
+    } catch (err) {
+      console.error("Login fetch error:", err);
+      setError("Failed to connect to the server. Please try again later.");
     }
   };
 
   return (
     <div className={`${inter.className} min-h-screen flex bg-gray-100`}>
       {/* Left panel (illustration/background) */}
-      {/* Left side */}
       <div className="hidden md:flex flex-1 bg-blue-50 items-center justify-center">
-        {/* You can replace with your illustration */}
         <div className="w-3/4 h-3/4 bg-white rounded-xl shadow-inner flex items-center justify-center text-gray-400">
           Image / Illustration
         </div>
@@ -61,13 +73,6 @@ export default function Login() {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="flex items-center gap-2 mb-6">
-            {/* <Image
-              src="/logo.svg"
-              alt="Logo"
-              width={40}
-              height={40}
-              className="mr-2"
-            /> */}
             <span className="text-2xl font-bold text-gray-800 mb-1">Inventory</span>
           </div>
 
@@ -80,11 +85,11 @@ export default function Login() {
           {/* Form */}
           <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4">
             <Text
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              value={employeeId}
+              onChange={(e) => setEmployeeId(e.target.value)}
               required={true}
-              label="Email Address"
+              label="Employee ID"
             />
             <Text
               type="password"
@@ -127,4 +132,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
