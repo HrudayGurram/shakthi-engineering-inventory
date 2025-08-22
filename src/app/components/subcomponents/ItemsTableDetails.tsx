@@ -38,10 +38,9 @@ interface UsersTableProps {
 
 export function ItemsTableDetails({ users }: UsersTableProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [itemToDelete, setItemToDelete] = useState('');
+    const [itemToDelete, setItemToDelete] = useState<string | number>('');
     const [isDeleting, setIsDeleting] = useState(false);
     const handleDeleteClick = (item: string | number) => {
-        const [itemToDelete, setItemToDelete] = useState<string | number>('');
         setItemToDelete(item);
         setIsModalOpen(true);
     };
